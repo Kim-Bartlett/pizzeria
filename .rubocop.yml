@@ -1,0 +1,16 @@
+inherit_gem:
+  rubocop-rails_config:
+    - config/rails.yml
+
+Layout/BlockAlignment:
+  EnforcedStyleAlignWith: start_of_block
+
+Style/EmptyMethod:
+  EnforcedStyle: compact
+
+# should probably look into globally configuring this / if this is something I should be doing
+Style/FrozenStringLiteralComment:
+  Enabled: false
+
+Style/StringLiterals:
+  EnforcedStyle: single_quotes
