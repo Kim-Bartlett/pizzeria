@@ -16,13 +16,18 @@ class OrdersController < ApplicationController
         pizza[:quantity].to_i.times do
           new_pizza = Pizza.create!(order: @order, specialty_type_id: pizza[:specialty_type_id])
           pizza[:topping_ids].each do |id|
+            # bug here
             PizzaTopping.create!(pizza: new_pizza, topping_id: id)
           end
         end
       end
     end
 
-    render json: @order.to_json
+    if @order.persisted?
+      render status: :created, json: @order.to_json
+    else  
+      render status: :unprocessable_entity
+    end
   end
 
   def index; end

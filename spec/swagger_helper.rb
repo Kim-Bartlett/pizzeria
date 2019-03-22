@@ -16,7 +16,7 @@ RSpec.configure do |config|
     'v1/swagger.json' => {
       swagger: '2.0',
       info: {
-        title: 'API V1',
+        title: 'Pizzeria API',
         version: 'v1'
       },
       paths: {}

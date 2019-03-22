@@ -1,0 +1,155 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Pizzeria API",
+    "version": "v1"
+  },
+  "paths": {
+    "/orders": {
+      "post": {
+        "summary": "Place an order",
+        "tags": [
+          "Orders"
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "order",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "order": {
+                  "type": "object",
+                  "properties": {
+                    "delivery": {
+                      "type": "boolean"
+                    },
+                    "address": {
+                      "type": "object",
+                      "properties": {
+                        "city": {
+                          "type": "string"
+                        },
+                        "state": {
+                          "type": "string"
+                        },
+                        "street": {
+                          "type": "string"
+                        },
+                        "zip": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "customer": {
+                      "type": "object",
+                      "properties": {
+                        "email": {
+                          "example": "test@gmail.com",
+                          "type": "string",
+                          "pattern": "(?-mix:\\A[a-zA-Z0-9.!\\#$%&'*+\\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*\\z)"
+                        },
+                        "first_name": {
+                          "type": "string"
+                        },
+                        "last_name": {
+                          "type": "string"
+                        },
+                        "phone": {
+                          "example": "555-555-5555",
+                          "type": "string",
+                          "pattern": "(?-mix:\\(?[0-9]{3}\\)?-[0-9]{3}-[0-9]{4})"
+                        }
+                      },
+                      "required": [
+                        "email",
+                        "first_name",
+                        "last_name",
+                        "phone"
+                      ]
+                    },
+                    "pizzas": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "quantity": {
+                            "type": "integer"
+                          },
+                          "specialty_type_id": {
+                            "type": "integer"
+                          },
+                          "topping_ids": {
+                            "type": "array",
+                            "items": {
+                              "type": "integer"
+                            }
+                          }
+                        },
+                        "required": [
+                          "quantity",
+                          "specialty_type_id"
+                        ]
+                      }
+                    }
+                  },
+                  "required": [
+                    "address",
+                    "customer",
+                    "pizzas"
+                  ]
+                }
+              },
+              "required": [
+                "order"
+              ]
+            }
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "201": {
+            "description": "Order created"
+          }
+        }
+      }
+    },
+    "/specialty_types": {
+      "get": {
+        "summary": "Retrieves a list of pizza types",
+        "tags": [
+          "Types"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "success"
+          }
+        }
+      }
+    },
+    "/toppings": {
+      "get": {
+        "summary": "Retrieves a list of toppings",
+        "tags": [
+          "Toppings"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "success"
+          }
+        }
+      }
+    }
+  }
+}

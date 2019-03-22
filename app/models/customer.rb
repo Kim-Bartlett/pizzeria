@@ -3,8 +3,6 @@ class Customer < ApplicationRecord
   has_many :addresses, through: :customer_addresses
   has_many :orders
 
-  # accepts_nested_attributes_for :addresses
-
   validates :email, presence: true, uniqueness: true, format: { with: URI::MailTo::EMAIL_REGEXP,
                                                                 message: 'Please enter a valid email address.' }
   validates :first_name, presence: true

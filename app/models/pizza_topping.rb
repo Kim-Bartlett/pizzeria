@@ -1,5 +1,6 @@
 class PizzaTopping < ApplicationRecord
   include ActionView::Helpers::NumberHelper
+  after_save :update_prices!
 
   belongs_to :pizza
   belongs_to :topping
@@ -10,5 +11,9 @@ class PizzaTopping < ApplicationRecord
 
   def formatted_price
     number_to_currency(total_price, unit: '$')
+  end
+
+  def update_prices!
+    pizza.add_toppings_price!
   end
 end

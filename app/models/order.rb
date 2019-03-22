@@ -35,8 +35,12 @@ class Order < ApplicationRecord
         time: created_at.strftime('%I:%M%P'),
         status: status.titleize,
         total_price: formatted_total_price,
-        pizzas: pizzas.map(&:to_json)
+        pizzas: pizzas.map { |pizza| "#{pizza.specialty_type.name} with #{pizza.toppings.map(&:name)}" }
       }
     }
+  end
+
+  def update_price!
+    self.update_attributes(total_price: pizzas.map(&:total_price).sum)
   end
 end

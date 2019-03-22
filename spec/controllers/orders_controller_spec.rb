@@ -45,9 +45,7 @@ describe OrdersController do
     end
 
     it 'returns http success' do
-      puts '!!!!'
       post :create, format: :json, params: create_params
-      puts body.inspect
       expect(response).to have_http_status(:success)
     end
   end
