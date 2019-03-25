@@ -1,6 +1,6 @@
 class PizzaTopping < ApplicationRecord
   include ActionView::Helpers::NumberHelper
-  after_save :update_prices!
+  after_create :update_prices!
 
   belongs_to :pizza
   belongs_to :topping
@@ -14,6 +14,6 @@ class PizzaTopping < ApplicationRecord
   end
 
   def update_prices!
-    pizza.add_toppings_price!
+    self.update!(price: topping.price)
   end
 end

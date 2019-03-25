@@ -77,12 +77,19 @@
                         "type": "object",
                         "properties": {
                           "quantity": {
+                            "example": 1,
                             "type": "integer"
                           },
                           "specialty_type_id": {
+                            "example": 1,
                             "type": "integer"
                           },
                           "topping_ids": {
+                            "example": [
+                              1,
+                              2,
+                              3
+                            ],
                             "type": "array",
                             "items": {
                               "type": "integer"
@@ -115,6 +122,111 @@
         "responses": {
           "201": {
             "description": "Order created"
+          }
+        }
+      },
+      "get": {
+        "summary": "Retrieves a list of orders",
+        "tags": [
+          "Orders"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "filter",
+            "in": "query",
+            "required": false,
+            "enum": [
+              "all",
+              "closed",
+              "open"
+            ],
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success"
+          }
+        }
+      }
+    },
+    "/orders/:id": {
+      "get": {
+        "summary": "Retrieves a an order by id",
+        "tags": [
+          "Orders"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success"
+          }
+        }
+      },
+      "put": {
+        "summary": "Updates the status of an order",
+        "tags": [
+          "Orders"
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "order",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "order": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "integer"
+                    },
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "placed",
+                        "preparing",
+                        "delivering",
+                        "ready_for_pickup",
+                        "complete",
+                        "cancelled"
+                      ]
+                    }
+                  }
+                },
+                "required": [
+                  "id",
+                  "status"
+                ]
+              },
+              "required": [
+                "order"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success"
           }
         }
       }

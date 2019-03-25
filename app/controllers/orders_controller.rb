@@ -13,28 +13,41 @@ class OrdersController < ApplicationController
       @order = Order.create!(params.merge(address: address, customer: customer))
 
       create_params[:pizzas].each do |pizza|
-        pizza[:quantity].to_i.times do
-          new_pizza = Pizza.create!(order: @order, specialty_type_id: pizza[:specialty_type_id])
-          pizza[:topping_ids].each do |id|
-            # bug here
-            PizzaTopping.create!(pizza: new_pizza, topping_id: id)
-          end
-        end
+        Pizza.create_pizza!(pizza[:quantity], @order.id, pizza[:specialty_type_id], pizza[:topping_ids])
       end
     end
 
     if @order.persisted?
-      render status: :created, json: @order.to_json
-    else  
+      render status: :created, json: { order: @order.to_json }
+    else
       render status: :unprocessable_entity
     end
   end
 
-  def index; end
+  def index
+    if index_params[:filter] == 'all'
+      @orders = Order.all
+    elsif index_params[:filter] == 'closed'
+      @orders = Order.where(status: Order.statuses[:complete] | Order.statuses[:cancelled])
+    else
+      @orders = Order.where.not(status: Order.statuses[:complete] | Order.statuses[:cancelled])
+    end
 
-  def show; end
+    render status: :ok, json: { orders: @orders.map(&:to_json) }
+  end
 
-  def update_status; end
+  def show
+    render status: :ok, json: { order: @order.to_json }
+  end
+
+  def update
+    if Order.find(update_params[:id]).present?
+      Order.find(update_params[:id]).update!(status: Order.statuses[update_params[:status].to_sym])
+      render status: :ok, json: { order: @order.to_json }
+    else
+      render status: :unprocessable_entity
+    end
+  end
 
   def create_params
     params.require(:order).permit(
@@ -49,8 +62,16 @@ class OrdersController < ApplicationController
       pizzas: [
                 :quantity,
                 :specialty_type_id,
-                topping_ids: [ :id ]
+                topping_ids: []
               ]
     )
+  end
+
+  def index_params
+    params.permit(:filter)
+  end
+
+  def update_params
+    params.require(:order).permit(:id, :status)
   end
 end

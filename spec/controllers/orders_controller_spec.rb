@@ -4,7 +4,7 @@ describe OrdersController do
 
   let(:body) { JSON.parse(response.body) }
 
-  describe 'GET #index' do
+  fdescribe 'GET #index' do
     it 'returns http success' do
       get :index, format: :json
       expect(response).to have_http_status(:success)
@@ -47,6 +47,7 @@ describe OrdersController do
     it 'returns http success' do
       post :create, format: :json, params: create_params
       expect(response).to have_http_status(:success)
+      puts Pizza.all.inspect
     end
   end
 
@@ -57,9 +58,10 @@ describe OrdersController do
     end
   end
 
-  describe 'PUT #update_status' do
+  describe 'PUT #update' do
+    let!(:order) { create(:order, id: 1) }
     it 'returns http success' do
-      put :update_status, params: { id: 1 }, format: :json
+      put :update, params: { id: 1, order: { id: 1, status: 'cancelled' } }, format: :json
       expect(response).to have_http_status(:success)
     end
   end

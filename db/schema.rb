@@ -45,7 +45,6 @@ ActiveRecord::Schema.define(version: 2019_03_21_204300) do
   create_table "orders", force: :cascade do |t|
     t.bigint "address_id"
     t.bigint "customer_id"
-    t.decimal "total_price", precision: 8, scale: 2, default: "0.0"
     t.integer "status", default: 0
     t.boolean "delivery", default: true
     t.datetime "created_at", null: false
@@ -67,7 +66,6 @@ ActiveRecord::Schema.define(version: 2019_03_21_204300) do
   create_table "pizzas", force: :cascade do |t|
     t.bigint "specialty_type_id"
     t.decimal "specialty_type_price", precision: 8, scale: 2, default: "0.0"
-    t.decimal "total_price", precision: 8, scale: 2, default: "0.0"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "order_id"

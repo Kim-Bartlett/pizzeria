@@ -10,9 +10,6 @@ describe Order do
   describe 'validations' do
     it { should validate_presence_of(:customer_id) }
     it { should validate_presence_of(:status) }
-    it { should validate_presence_of(:total_price) }
-    it { should validate_numericality_of(:total_price).is_greater_than_or_equal_to(0) }
-    it { should validate_numericality_of(:total_price).is_less_than(1000000) }
 
     describe 'is delivery' do
       subject { create(:order, delivery: true) }

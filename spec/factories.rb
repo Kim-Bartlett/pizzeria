@@ -46,9 +46,11 @@ FactoryBot.define do
 
   factory :specialty_type do
     sequence(:name) { |n| "specialty#{n}" }
+    price { 9.99 }
   end
 
   factory :topping do
     sequence(:name) { |n| "specialty#{n}" }
+    price { 0.50 }
   end
 end

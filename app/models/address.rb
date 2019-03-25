@@ -1,5 +1,5 @@
 class Address < ApplicationRecord
-  before_save :downcase_fields
+  before_create :downcase_fields
 
   validates :city, presence: true
   validates :state, presence: true

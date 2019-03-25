@@ -42,7 +42,7 @@ describe 'Orders API' do
                           properties: {
                             quantity: { example: 1, type: :integer },
                             specialty_type_id: { example: 1, type: :integer },
-                            topping_ids: { example: 1, type: :array, items: { type: :integer } }
+                            topping_ids: { example: [1, 2, 3], type: :array, items: { type: :integer } }
                           },
                           required: ['quantity', 'specialty_type_id']
                         }
@@ -90,11 +90,60 @@ describe 'Orders API' do
 
         run_test!
       end
+    end
 
-      #   response '400', 'Order creation failed for parameter missing' do
+    get 'Retrieves a list of orders' do
+      tags 'Orders'
+      produces 'application/json'
+      parameter name: :filter, in: :query, required: false, enum: ['all', 'closed', 'open'], type: :string
 
-      #     include_context 'with integration test'
-      #   end
+      response '200', 'success' do
+        let!(:orders) { create_list :order, 3 }
+        run_test!
+      end
+    end
+  end
+
+  path '/orders/:id' do
+    get 'Retrieves a an order by id' do
+      tags 'Orders'
+      produces 'application/json'
+      parameter name: :id, in: :path, required: true, type: :string
+
+      response '200', 'success' do
+        let(:id) { create(:order).id }
+        run_test!
+      end
+    end
+
+    put 'Updates the status of an order' do
+      tags 'Orders'
+      consumes 'application/json'
+      produces 'application/json'
+      parameter name: :order, in: :body, schema: {
+          type: :object,
+          properties: {
+            order: {
+              type: :object,
+              properties: {
+                  id: { type: :integer },
+                  status: { type: :string, enum: ['placed', 'preparing', 'delivering', 'ready_for_pickup', 'complete', 'cancelled'] }
+                  }
+                }, required: ['id', 'status']
+            }, required: ['order']
+          }
+
+      response '200', 'success' do
+        let(:id) { create(:order).id }
+        let!(:order) do
+         {   order: {
+                id: id,
+                status: 'complete'
+            }
+        }
+        end
+        run_test!
+      end
     end
   end
 end
