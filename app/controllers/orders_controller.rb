@@ -37,12 +37,18 @@ class OrdersController < ApplicationController
   end
 
   def show
-    render status: :ok, json: { order: @order.to_json }
+    @order = Order.find(show_params[:id])
+    if @order.present?
+      render status: :ok, json: { order: @order.to_json }
+    else
+      render status: :unprocessable_entity
+    end
   end
 
   def update
-    if Order.find(update_params[:id]).present?
-      Order.find(update_params[:id]).update!(status: Order.statuses[update_params[:status].to_sym])
+    @order = Order.find(update_params[:id])
+    if @order.present?
+      @order.update!(status: Order.statuses[update_params[:status].to_sym])
       render status: :ok, json: { order: @order.to_json }
     else
       render status: :unprocessable_entity
@@ -73,5 +79,9 @@ class OrdersController < ApplicationController
 
   def update_params
     params.require(:order).permit(:id, :status)
+  end
+
+  def show_params
+    params.require(:order).permit(:id)
   end
 end

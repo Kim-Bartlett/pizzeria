@@ -1,6 +1,7 @@
 describe OrdersController do
   let!(:toppings) { create_list :topping, 3 }
   let!(:specialty_types) { create_list :specialty_type, 3 }
+  let!(:order) { create(:order) }
 
   let(:body) { JSON.parse(response.body) }
 
@@ -53,7 +54,7 @@ describe OrdersController do
 
   describe 'GET #show' do
     it 'returns http success' do
-      get :show, params: { id: 1 }, format: :json
+      get :show, params: { id: order.id, order: { id: order.id } }, format: :json
       expect(response).to have_http_status(:success)
     end
   end
@@ -61,7 +62,7 @@ describe OrdersController do
   describe 'PUT #update' do
     let!(:order) { create(:order, id: 1) }
     it 'returns http success' do
-      put :update, params: { id: 1, order: { id: 1, status: 'cancelled' } }, format: :json
+      put :update, params: { id: order.id, order: { id: order.id, status: 'cancelled' } }, format: :json
       expect(response).to have_http_status(:success)
     end
   end

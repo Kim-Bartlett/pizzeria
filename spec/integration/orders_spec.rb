@@ -105,17 +105,6 @@ describe 'Orders API' do
   end
 
   path '/orders/:id' do
-    get 'Retrieves a an order by id' do
-      tags 'Orders'
-      produces 'application/json'
-      parameter name: :id, in: :path, required: true, type: :string
-
-      response '200', 'success' do
-        let(:id) { create(:order).id }
-        run_test!
-      end
-    end
-
     put 'Updates the status of an order' do
       tags 'Orders'
       consumes 'application/json'
@@ -136,11 +125,11 @@ describe 'Orders API' do
       response '200', 'success' do
         let(:id) { create(:order).id }
         let!(:order) do
-         {   order: {
-                id: id,
-                status: 'complete'
-            }
-        }
+          {   order: {
+                 id: id,
+                 status: 'complete'
+             }
+         }
         end
         run_test!
       end
