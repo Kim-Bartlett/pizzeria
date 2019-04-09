@@ -154,28 +154,6 @@
       }
     },
     "/orders/:id": {
-      "get": {
-        "summary": "Retrieves a an order by id",
-        "tags": [
-          "Orders"
-        ],
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "success"
-          }
-        }
-      },
       "put": {
         "summary": "Updates the status of an order",
         "tags": [
